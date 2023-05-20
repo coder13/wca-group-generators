@@ -2,14 +2,41 @@
   "name": "wca-group-generators",
   "version": "0.0.1",
   "description": "Library for generating groups for WCA competitions",
-  "main": "index.js",
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "build": "tsc",
+    "prepublish": "npm run build"
   },
-  "author": "coder13",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coder13/wca-group-generators.git"
+  },
+  "author": {
+    "name": "Cailyn Hoover",
+    "email": "choover11@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/coder13/wca-group-generators/issues"
+  },
+  "homepage": "https://github.com/coder13/wca-group-generators#readme",
+  "license": "GPL",
   "dependencies": {
+    "@wca/helpers": "^1.1.4",
     "tsc": "^2.0.4",
     "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
+    "@types/jest": "^29.5.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.8"
   }
 }
