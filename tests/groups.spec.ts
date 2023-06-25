@@ -1,5 +1,5 @@
 import { activityCodeToName, Activity } from '@wca/helpers';
-import { createGroupActivity } from '../src';
+import { createGroupActivity } from '../src/utils';
 
 describe('Groups', () => {
   const roundActivity: Activity = {
