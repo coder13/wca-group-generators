@@ -17,35 +17,58 @@ describe('Constraints', () => {
 
   const examplePerson = wcif.persons[0] as Person;
 
-  it('Unique constraint should pass when there are no assignments', () => {
-    const score = uniqueCompetitorAssignmentConstraint.score(
-      wcif as Competition,
-      activity_333r1g1,
-      'competitor',
-      examplePerson
-    );
+  describe('Unique constraint', () => {
+    it('should pass when there are no assignments', () => {
+      const score = uniqueCompetitorAssignmentConstraint.score(
+        wcif as Competition,
+        activity_333r1g1,
+        'competitor',
+        examplePerson
+      );
 
-    expect(score).toEqual(0);
-  });
+      expect(score).toEqual(0);
+    });
 
-  it('Unique constraint should not pass when there are no assignments', () => {
-    const assignedPerson = {
-      ...examplePerson,
-      assignments: [
-        {
-          activityId: activity_333r1g2.id,
-          assignmentCode: 'competitor',
-        },
-      ],
-    } as Person;
+    it('should not pass when there are no assignments', () => {
+      const assignedPerson = {
+        ...examplePerson,
+        assignments: [
+          {
+            activityId: activity_333r1g2.id,
+            assignmentCode: 'competitor',
+          },
+        ],
+      } as Person;
 
-    const score = uniqueCompetitorAssignmentConstraint.score(
-      wcif as Competition,
-      activity_333r1g1,
-      'competitor',
-      assignedPerson
-    );
+      const score = uniqueCompetitorAssignmentConstraint.score(
+        wcif as Competition,
+        activity_333r1g1,
+        'competitor',
+        assignedPerson
+      );
 
-    expect(score).toEqual(null);
+      expect(score).toEqual(null);
+    });
+
+    it('should pass when there are no other assignments with the same code', () => {
+      const assignedPerson = {
+        ...examplePerson,
+        assignments: [
+          {
+            activityId: activity_333r1g2.id,
+            assignmentCode: 'staff-scrambler',
+          },
+        ],
+      } as Person;
+
+      const score = uniqueCompetitorAssignmentConstraint.score(
+        wcif as Competition,
+        activity_333r1g1,
+        'competitor',
+        assignedPerson
+      );
+
+      expect(score).toEqual(0);
+    });
   });
 });
