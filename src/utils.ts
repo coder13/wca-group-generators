@@ -15,8 +15,6 @@ export const createGroupActivity = (
     `${eventId}-r${roundNumber}-g${groupNumber}` +
     (attemptNumber ? `-a${attemptNumber}` : '');
 
-  console.log(activityCode);
-
   return {
     id,
     name: activityCodeToName(activityCode),
