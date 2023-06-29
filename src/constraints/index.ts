@@ -9,4 +9,5 @@
  */
 export * from './util';
 export * from './createUniqueAssignmentConstraint';
+export * from './mustBeInRoundConstraint';
 export * from './types';
