@@ -1,4 +1,4 @@
-import { Competition } from '@wca/helpers';
+import { Activity, Competition, Person } from '@wca/helpers';
 import { Constraint } from './constraints';
 
 export default class GroupGenerator {
@@ -32,19 +32,68 @@ export default class GroupGenerator {
     }
   }
 
+  generateForPerson(
+    registrantId: number,
+    assignmentCode: string,
+    activities: Activity[]
+  ) {
+    this.wcif.persons = this.wcif.persons.map((person) => {
+      if (person.registrantId !== registrantId) {
+        return person;
+      }
+
+      const activityScores = new Map<number, number>();
+      activities.forEach((activity) => {
+        activityScores.set(activity.id, 0);
+        const scores = this.constraints.map((constraint) =>
+          constraint.score(this.wcif, activity, assignmentCode, person)
+        );
+        if (scores.some((score) => score === null)) {
+          activityScores.delete(activity.id);
+        } else {
+          const score = (scores as number[]).reduce((a, b) => a + b, 0);
+          activityScores.set(activity.id, score);
+        }
+      });
+
+      if (activityScores.size === 0) {
+        return person;
+      }
+
+      // find the activity with the highest score
+      const bestActivityId = [...activityScores.entries()].reduce((a, b) =>
+        a[1] > b[1] ? a : b
+      )[0];
+
+      return {
+        ...person,
+        assignments: [
+          ...(person.assignments || []),
+          {
+            activityId: bestActivityId,
+            stationNumber: null,
+            assignmentCode,
+          },
+        ],
+      };
+    });
+    return this;
+  }
+
   /**
-   * For each assignmentCode, iterate over all persons and give them an assignment for the assignmentCode.
+   * iterate over all accepted persons, for each assignmentCode, assign them to an activity
    * @param assignmentCodes
    * @param roundId
    */
-  generate(assignmentCodes: string[], roundId: string) {
-    const round = this.wcif.events
-      .flatMap((event) => event.rounds)
-      .find((round) => round.id === roundId);
-
-    if (!round) {
-      throw new Error(`Round ${roundId} not found.`);
-    }
+  generate(assignmentCodes: string[], activities: Activity[]) {
+    this.wcif.persons.forEach((person) => {
+      this.generateForPerson(
+        person.registrantId,
+        assignmentCodes[0],
+        activities
+      );
+    });
+    return this;
 
     /**
      * For each person
@@ -57,5 +106,9 @@ export default class GroupGenerator {
      * for each assignment code
      *
      */
+  }
+
+  getWcif() {
+    return this.wcif;
   }
 }

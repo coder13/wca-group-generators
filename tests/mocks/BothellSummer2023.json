@@ -12472,7 +12472,7 @@
           "555",
           "clock"
         ],
-        "status": "accepted",
+        "status": "deleted",
         "guests": 0,
         "comments": "",
         "administrativeNotes": ""
@@ -12660,7 +12660,7 @@
           "555",
           "clock"
         ],
-        "status": "accepted",
+        "status": "deleted",
         "guests": 0,
         "comments": "",
         "administrativeNotes": ""
@@ -12836,7 +12836,7 @@
         "eventIds": [
           "333"
         ],
-        "status": "accepted",
+        "status": "deleted",
         "guests": 2,
         "comments": "1 competitor, 1 spectator",
         "administrativeNotes": ""
@@ -12867,7 +12867,7 @@
         "eventIds": [
           "333"
         ],
-        "status": "accepted",
+        "status": "deleted",
         "guests": 7,
         "comments": "",
         "administrativeNotes": ""
