@@ -10,4 +10,5 @@
 export * from './util';
 export * from './createUniqueAssignment';
 export * from './mustBeInRound';
+export * from './balancedGroupSize';
 export * from './types';

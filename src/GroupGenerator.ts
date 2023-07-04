@@ -1,5 +1,10 @@
 import { Activity, Competition, Person } from '@wca/helpers';
 import { Constraint } from './constraints';
+import {
+  allChildActivitiesInRoom,
+  isParentActivityCode,
+  rooms,
+} from './activities';
 
 export default class GroupGenerator {
   wcif: Competition;
@@ -87,6 +92,10 @@ export default class GroupGenerator {
    */
   generate(assignmentCodes: string[], activities: Activity[]) {
     this.wcif.persons.forEach((person) => {
+      if (person.registration?.status !== 'accepted') {
+        return;
+      }
+
       this.generateForPerson(
         person.registrantId,
         assignmentCodes[0],
@@ -110,5 +119,20 @@ export default class GroupGenerator {
 
   getWcif() {
     return this.wcif;
+  }
+
+  /**
+   * Returns all child activities that are children of the given activity code.
+   * @param activityCode
+   * @returns
+   */
+  pickActivities(activityCode: string) {
+    const childActivitiess = rooms(this.wcif).flatMap((room) =>
+      allChildActivitiesInRoom(room)
+    );
+
+    return childActivitiess.filter((activity) =>
+      isParentActivityCode(activityCode, activity.activityCode)
+    );
   }
 }
