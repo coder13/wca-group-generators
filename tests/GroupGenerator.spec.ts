@@ -120,7 +120,9 @@ describe('GroupGenerator', () => {
         (activity) => activity.activityCode === '333-r1-g1'
       );
 
-      const numberOfPeople = newWcif.persons.length;
+      const numberOfPeople = newWcif.persons.filter(
+        (person) => person.registration?.status === 'accepted'
+      ).length;
 
       const allAssignedTo333r1g1 = newWcif.persons.filter((person) =>
         person.assignments?.some(
