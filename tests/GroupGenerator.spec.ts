@@ -243,5 +243,52 @@ describe('GroupGenerator', () => {
         ).length
       ).toBe(otherHalf);
     });
+
+    it('Assigns all people to activities given more complex constraints', () => {
+      const EmptyGroupGenerator = new GroupGenerator({
+        ...freshWcif(),
+      } as Competition);
+
+      EmptyGroupGenerator.addConstraint(mustBeInRoundConstraint('competitor'));
+      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
+      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
+
+      const newWcif = EmptyGroupGenerator.generate(
+        ['competitor'],
+        EmptyGroupGenerator.pickActivities('333-r1-g1')
+      ).getWcif();
+
+      const activities = rooms(newWcif)
+        .flatMap((room) => allChildActivitiesInRoom(room))
+        .filter((activity) => activity.activityCode === '333-r1-g1');
+
+      const numberOfPeople = newWcif.persons.filter(
+        (person) =>
+          person.registration?.status === 'accepted' &&
+          person.registration.eventIds.includes('333')
+      ).length;
+      const half = Math.floor(numberOfPeople / 2);
+      const otherHalf = numberOfPeople - half;
+
+      expect(
+        newWcif.persons.filter((person) =>
+          person.assignments?.some(
+            (assignment) =>
+              assignment.assignmentCode === 'competitor' &&
+              assignment.activityId === activities[0].id
+          )
+        ).length
+      ).toBe(half);
+
+      expect(
+        newWcif.persons.filter((person) =>
+          person.assignments?.some(
+            (assignment) =>
+              assignment.assignmentCode === 'competitor' &&
+              assignment.activityId === activities[1].id
+          )
+        ).length
+      ).toBe(otherHalf);
+    });
   });
 });

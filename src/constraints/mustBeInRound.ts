@@ -8,7 +8,7 @@ import { createConstraint } from './util';
  */
 export const mustBeInRoundConstraint = (constraintAssignmentCode: string) =>
   createConstraint(
-    'must_be_in_round_for_assignment',
+    `must_be_in_round_for_${constraintAssignmentCode}`,
     (wcif, activity, assignmentCode, person) => {
       // If the assignment codes aren't the same, don't run this generator.
       if (assignmentCode !== constraintAssignmentCode) {
