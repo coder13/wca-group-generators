@@ -5,7 +5,7 @@ import { createConstraint } from './util';
  * @param assignmentCode
  * @returns
  */
-export const balancedGroupSize = (assignmentCode: string) =>
+export const spreadDelegates = (assignmentCode: string) =>
   createConstraint(
     `Spread_Delegates_${assignmentCode}`,
     (wcif, activity, assignmentCode) => {

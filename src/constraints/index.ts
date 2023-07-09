@@ -11,4 +11,6 @@ export * from './util';
 export * from './createUniqueAssignment';
 export * from './mustBeInRound';
 export * from './balancedGroupSize';
+export * from './spreadDelegates';
+export * from './balancedSpeed';
 export * from './types';
