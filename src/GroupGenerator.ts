@@ -96,11 +96,9 @@ export default class GroupGenerator {
         return;
       }
 
-      this.generateForPerson(
-        person.registrantId,
-        assignmentCodes[0],
-        activities
-      );
+      assignmentCodes.forEach((assignmentCode) => {
+        this.generateForPerson(person.registrantId, assignmentCode, activities);
+      });
     });
     return this;
 
