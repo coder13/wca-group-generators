@@ -4,9 +4,6 @@ import { createUniqueAssignmentConstraint } from '../../src/constraints';
 import wcif from '../mocks/BothellSummer2023.json';
 import { getActivityFromCode } from '../util';
 
-const uniqueCompetitorAssignmentConstraint =
-  createUniqueAssignmentConstraint('competitor');
-
 const activity_333r1g1 = getActivityFromCode(
   wcif as Competition,
   '333-r1-g1'
@@ -20,7 +17,7 @@ const examplePerson = wcif.persons[0] as Person;
 
 describe('@constraints/createUniqueAssignment', () => {
   it('should pass when there are no other assignments', () => {
-    const score = uniqueCompetitorAssignmentConstraint.score(
+    const score = createUniqueAssignmentConstraint.score(
       wcif as Competition,
       activity_333r1g1,
       'competitor',
@@ -41,7 +38,7 @@ describe('@constraints/createUniqueAssignment', () => {
       ],
     } as Person;
 
-    const score = uniqueCompetitorAssignmentConstraint.score(
+    const score = createUniqueAssignmentConstraint.score(
       wcif as Competition,
       activity_333r1g1,
       'competitor',
@@ -62,7 +59,7 @@ describe('@constraints/createUniqueAssignment', () => {
       ],
     } as Person;
 
-    const score = uniqueCompetitorAssignmentConstraint.score(
+    const score = createUniqueAssignmentConstraint.score(
       wcif as Competition,
       activity_333r1g1,
       'competitor',

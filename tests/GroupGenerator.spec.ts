@@ -160,7 +160,7 @@ describe('GroupGenerator', () => {
         ...freshWcif(),
       } as Competition);
 
-      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
+      EmptyGroupGenerator.addConstraint('competitor', balancedGroupSize);
 
       const newWcif = EmptyGroupGenerator.generate(
         ['competitor'],
@@ -203,8 +203,8 @@ describe('GroupGenerator', () => {
         ...freshWcif(),
       } as Competition);
 
-      EmptyGroupGenerator.addConstraint(mustBeInRoundConstraint('competitor'));
-      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
+      EmptyGroupGenerator.addConstraint('competitor', mustBeInRoundConstraint);
+      EmptyGroupGenerator.addConstraint('competitor', balancedGroupSize);
 
       const newWcif = EmptyGroupGenerator.generate(
         ['competitor'],
@@ -249,9 +249,9 @@ describe('GroupGenerator', () => {
         ...freshWcif(),
       } as Competition);
 
-      EmptyGroupGenerator.addConstraint(mustBeInRoundConstraint('competitor'));
-      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
-      EmptyGroupGenerator.addConstraint(balancedGroupSize('competitor'));
+      EmptyGroupGenerator.addConstraint('competitor', mustBeInRoundConstraint);
+      EmptyGroupGenerator.addConstraint('competitor', balancedGroupSize);
+      EmptyGroupGenerator.addConstraint('competitor', balancedGroupSize);
 
       const newWcif = EmptyGroupGenerator.generate(
         ['competitor'],

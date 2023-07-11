@@ -5,19 +5,18 @@ import { createConstraint } from './util';
  * @param assignmentCode
  * @returns
  */
-export const balancedGroupSize = (assignmentCode: string) =>
-  createConstraint(
-    `Balanced_group_size_for_${assignmentCode}`,
-    (wcif, activity, assignmentCode) => {
-      // Higher is better so we return negative numbers to prefer smaller groups.
-      return (
-        -wcif.persons.filter((person) =>
-          person.assignments?.some(
-            (assignment) =>
-              assignment.assignmentCode === assignmentCode &&
-              assignment.activityId === activity.id
-          )
-        ).length || 0
-      );
-    }
-  );
+export const balancedGroupSize = createConstraint(
+  'balanced_group_size',
+  (wcif, activity, assignmentCode) => {
+    // Higher is better so we return negative numbers to prefer smaller groups.
+    return (
+      -wcif.persons.filter((person) =>
+        person.assignments?.some(
+          (assignment) =>
+            assignment.assignmentCode === assignmentCode &&
+            assignment.activityId === activity.id
+        )
+      ).length || 0
+    );
+  }
+);

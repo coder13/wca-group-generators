@@ -1,4 +1,4 @@
-import { Activity, Competition, Person } from '@wca/helpers';
+import { Activity, AssignmentCode, Competition, Person } from '@wca/helpers';
 import { Constraint } from './constraints';
 import {
   allChildActivitiesInRoom,
@@ -8,19 +8,29 @@ import {
 
 export default class GroupGenerator {
   wcif: Competition;
-  constraints: Constraint[];
+  constraints: Map<AssignmentCode, Constraint[]>;
 
   constructor(wcif: Competition) {
     this.wcif = wcif;
-    this.constraints = [];
+    this.constraints = new Map();
   }
 
-  addConstraint(constraint: Constraint) {
-    this.constraints.push(constraint);
+  addConstraint(assignmentCode: AssignmentCode, constraint: Constraint) {
+    if (!this.constraints.has(assignmentCode)) {
+      this.constraints.set(assignmentCode, [constraint]);
+    } else {
+      this.constraints.set(assignmentCode, [
+        ...(this.constraints.get(assignmentCode) as Constraint[]),
+        constraint,
+      ]);
+    }
   }
 
-  setConstraints(constraints: Constraint[]) {
-    this.constraints = constraints;
+  setConstraintsForAssignmentCode(
+    assignmentCode: AssignmentCode,
+    constraints: Constraint[]
+  ) {
+    this.constraints.set(assignmentCode, constraints);
   }
 
   /**
@@ -42,6 +52,8 @@ export default class GroupGenerator {
     assignmentCode: string,
     activities: Activity[]
   ) {
+    const constraints = this.constraints.get(assignmentCode) || [];
+
     this.wcif.persons = this.wcif.persons.map((person) => {
       if (person.registrantId !== registrantId) {
         return person;
@@ -50,9 +62,10 @@ export default class GroupGenerator {
       const activityScores = new Map<number, number>();
       activities.forEach((activity) => {
         activityScores.set(activity.id, 0);
-        const scores = this.constraints.map((constraint) =>
+        const scores = constraints.map((constraint) =>
           constraint.score(this.wcif, activity, assignmentCode, person)
-        );
+        ) || [0];
+
         if (scores.some((score) => score === null)) {
           activityScores.delete(activity.id);
         } else {
@@ -97,6 +110,8 @@ export default class GroupGenerator {
       }
 
       assignmentCodes.forEach((assignmentCode) => {
+        console.log(assignmentCode);
+        debugger;
         this.generateForPerson(person.registrantId, assignmentCode, activities);
       });
     });

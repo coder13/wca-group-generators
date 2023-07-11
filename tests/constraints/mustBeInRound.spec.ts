@@ -7,9 +7,6 @@ import {
 import wcif from '../mocks/BothellSummer2023.json';
 import { getActivityFromCode } from '../util';
 
-const mustBeInRoundConstraintForCompetitor =
-  mustBeInRoundConstraint('competitor');
-
 const activity_333r1g1 = getActivityFromCode(
   wcif as Competition,
   '333-r1-g1'
@@ -50,19 +47,8 @@ const examplePersonNotSignedUpFor333: Person = {
 };
 
 describe('@constraints/mustBeInRound', () => {
-  it("should pass when assignment codes don't match", () => {
-    const score = mustBeInRoundConstraintForCompetitor.score(
-      wcif as Competition,
-      activity_333r1g1,
-      'staff-judge',
-      examplePersonSignedUpFor333
-    );
-
-    expect(score).toEqual(0);
-  });
-
   it('should not pass when person is not registered', () => {
-    const score = mustBeInRoundConstraintForCompetitor.score(
+    const score = mustBeInRoundConstraint.score(
       wcif as Competition,
       activity_333r1g1,
       'competitor',
@@ -73,7 +59,7 @@ describe('@constraints/mustBeInRound', () => {
   });
 
   it('should pass when the person is registered', () => {
-    const score = mustBeInRoundConstraintForCompetitor.score(
+    const score = mustBeInRoundConstraint.score(
       wcif as Competition,
       activity_333r1g1,
       'competitor',
@@ -107,7 +93,7 @@ describe('@constraints/mustBeInRound', () => {
       ),
     } as Competition;
 
-    const score = mustBeInRoundConstraintForCompetitor.score(
+    const score = mustBeInRoundConstraint.score(
       wcifWith333r2Open,
       activity_333r2g1,
       'competitor',
@@ -141,7 +127,7 @@ describe('@constraints/mustBeInRound', () => {
       ),
     } as Competition;
 
-    const score = mustBeInRoundConstraintForCompetitor.score(
+    const score = mustBeInRoundConstraint.score(
       wcifWith333r2Open,
       activity_333r2g1,
       'competitor',

@@ -1,6 +1,7 @@
 import { Activity, Competition, Person } from '@wca/helpers';
 
 export interface Constraint {
+  /** Unique Identifying name of constraint */
   name: string;
   /**
    *

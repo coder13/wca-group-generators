@@ -7,43 +7,42 @@ import { allChildActivitiesInRoom, rooms } from '../activities';
  * @param assignmentCode
  * @returns
  */
-export const createUniqueAssignmentConstraint = (assignmentCode: string) =>
-  createConstraint(
-    `unique_${assignmentCode}_per_round`,
-    (wcif, activity, assignmentCode, person) => {
-      const { eventId, roundNumber, attemptNumber } = parseActivityCode(
-        activity.activityCode
-      );
+export const createUniqueAssignmentConstraint = createConstraint(
+  'unique_assignment_code_per_round',
+  (wcif, activity, assignmentCode, person) => {
+    const { eventId, roundNumber, attemptNumber } = parseActivityCode(
+      activity.activityCode
+    );
 
-      const allActivitiesForRoundAttempt = rooms(wcif)
-        .flatMap((room) => allChildActivitiesInRoom(room))
-        .filter((activity) => {
-          const {
-            eventId: activityEventId,
-            roundNumber: activityRoundNumber,
-            attemptNumber: activityAttemptNumber,
-          } = parseActivityCode(activity.activityCode);
-          return (
-            eventId === activityEventId &&
-            roundNumber === activityRoundNumber &&
-            attemptNumber === activityAttemptNumber
-          );
-        });
+    const allActivitiesForRoundAttempt = rooms(wcif)
+      .flatMap((room) => allChildActivitiesInRoom(room))
+      .filter((activity) => {
+        const {
+          eventId: activityEventId,
+          roundNumber: activityRoundNumber,
+          attemptNumber: activityAttemptNumber,
+        } = parseActivityCode(activity.activityCode);
+        return (
+          eventId === activityEventId &&
+          roundNumber === activityRoundNumber &&
+          attemptNumber === activityAttemptNumber
+        );
+      });
 
-      const assignments =
-        person.assignments?.filter(
-          (assignment) => assignment.assignmentCode === assignmentCode
-        ) || [];
+    const assignments =
+      person.assignments?.filter(
+        (assignment) => assignment.assignmentCode === assignmentCode
+      ) || [];
 
-      if (
-        assignments.some((assignment) =>
-          allActivitiesForRoundAttempt.some(
-            (activity) => activity.id === assignment.activityId
-          )
+    if (
+      assignments.some((assignment) =>
+        allActivitiesForRoundAttempt.some(
+          (activity) => activity.id === assignment.activityId
         )
-      ) {
-        return null;
-      }
-      return 0;
+      )
+    ) {
+      return null;
     }
-  );
+    return 0;
+  }
+);

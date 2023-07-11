@@ -13,4 +13,5 @@ export * from './mustBeInRound';
 export * from './balancedGroupSize';
 export * from './spreadDelegates';
 export * from './balancedSpeed';
+export * from './mustNotHaveOtherAssignments';
 export * from './types';
