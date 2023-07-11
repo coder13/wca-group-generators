@@ -1,6 +1,6 @@
 {
   "name": "wca-group-generators",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Library for generating groups for WCA competitions",
   "main": "dist/index",
   "types": "dist/index",
